@@ -8,12 +8,3 @@ class Config:
     UPLOAD_PATH = path.join(BASE_DIRECTORY, "static", "uploads")
     FLASK_ADMIN_SWATCH = "simplex"
     SQLALCHEMY_DATABASE_URI = "sqlite:///database.db"
-    JWT_SECRET_KEY = "super-secret-key"
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(seconds=10)
-    SWAGGER_AUTHORIZATION = {
-        "JsonWebToken": {
-            "type": "apiKey",
-            "in": "header",
-            "name": "Authorization"
-        }
-    }

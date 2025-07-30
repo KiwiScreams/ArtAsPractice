@@ -4,7 +4,7 @@ from flask_admin.menu import MenuLink
 from src.admin_views import MentorView, CourseView
 from src.config import Config
 from flask_admin.contrib.sqla import ModelView
-from src.ext import db, migrate, api, admin, login_manager, jwt
+from src.ext import db, migrate, api, admin, login_manager
 from src.commands import init_db, populate_db
 from src.models.course import Course
 from src.models.mentor import Mentor
@@ -30,22 +30,12 @@ def create_app():
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
-    jwt.init_app(app)
     api.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = "auth.admin_login"
     @login_manager.user_loader
     def load_user(_id):
         return User.query.get(_id)
-
-    @jwt.user_identity_loader
-    def user_identity_loader(user):
-        return user.username
-
-    @jwt.user_lookup_loader
-    def user_lookup_callback(_jwt_header, jwt_data):
-        username = jwt_data["sub"]
-        return User.query.filter_by(username=username).first()
 
     admin.init_app(app)
     admin.add_view(MentorView(Mentor, db.session))
